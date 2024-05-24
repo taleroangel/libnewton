@@ -1,0 +1,17 @@
+syntax = "proto3";
+package dev.taleroangel.prism.memory;
+
+// Memory Addressing mode for A & B parameters\
+// Addressing is represented with two bits at the end of the instruction byte (00000011),
+// first bit represents the first parameter (A) and the second bit represents the second parameter (B).
+// When a bit is set to 1 then indirect addressing must be used
+enum AddressingMode {
+  // Use immediate addressing for both A & B parameters
+  AB_IMMEDIATE = 0;
+  // Use indirect addressing for B and immediate addressing for A
+  B_INDIRECT = 1;
+  // Use indirect addressing for A and immediate addressing for B
+  A_INDIRECT = 2;
+  // Use immediate addressing for both A & B parameters
+  AB_INDIRECT = 3;
+}

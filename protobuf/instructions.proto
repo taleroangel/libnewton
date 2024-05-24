@@ -1,0 +1,106 @@
+syntax = "proto3";
+package dev.taleroangel.prism.instructions;
+
+// Set of instructions available to Prism Assembly Language and Prism Binary Format
+enum InstructionSet {
+
+  // (No Operation) Do nothing
+  NOP = 0;
+  // Marks the beginning of a new script (Clears the machine state)\
+  // marks TRANSMIT flag as False, SCRIPT flag as True and HALT flag as False\
+  // must always be the first instruction inside a script, the script starts running when RUN is reached
+  BEGIN = 1;
+  // Marks the end of a script (important!) and starts running it
+  RUN = 2;
+  // Disables the state machine (no branching, no $PC) for transmitting real time data\
+  // marks TRANSMIT flag as True, SCRIPT flag as False and HALT flag as False\
+  // TRANSMIT mode is the default mode at startup\
+  // Beware: TRANSMIT mode disables branching as there is no state to keep
+  TRANSMIT = 3;
+  // Stop execution, sets the HALT flag to True and set the $SC with the value
+  // provided
+  HALT = 4;
+
+  // (Absolute Indexing) Use absolute indexing when the size of the buffer is unknown\
+  // marks IX flag as True\
+  // Beware: Absolute index can cause buffer overflowing, in that case the OW flag is set
+  AIDX = 5;
+  // (Relative InDeXing) Use relative indexing mapping from (0 - 100%) of the total buffer size\
+  // marks IX flag as False
+  RIDX = 6;
+
+  // Hold instructions until an UPDATE is issued\
+  // marks HOLD flag as True
+  HOLD = 7;
+  // (No) hold, makes instructions effects immediate, effectively disabling UPDATE\
+  // if NHOLD is called before UPDATE then the instructions are dropped\
+  // marks HOLD flag as False and resets $PO
+  NHOLD = 8;
+  // Apply instructions on hold\
+  // resets $PO (pending operations)
+  UPDATE = 9;
+
+  // (Jump) to another part of the script\
+  // copies $PC value into $PP and then sets $PC to the provided value\
+  // Beware: This instructions (and every other branching instruction) is disabled on TRANSMIT mode
+  JMP = 10;
+  // (Return) from a JMP\
+  // copies $PP into $PC, and sets the value of $RV (return value)\
+  // Beware: This instructions (and every other branching instruction) is disabled on TRANSMIT mode
+  RET = 11;
+  // (Branch if Equal) Does a JMP only if arguments A and B are equal\
+  // Beware: This instructions (and every other branching instruction) is disabled on TRANSMIT mode\
+  // no addressing mode supported on third (C) parameter, it must reference a label or absolute position in the script
+  BEQ = 12;
+  // (Branch if Not Equal) Does a JMP only if arguments A and B are NOT equal\
+  // Beware: This instructions (and every other branching instruction) is disabled on TRANSMIT mode\
+  // no addressing mode supported on third (C) parameter, it must reference a label or absolute position in the script
+  BNE = 13;
+
+  // Reserved for future branching operations (BGT and BLE)
+  reserved 14, 15;
+
+  // Load a new value into a register
+  LOAD = 16;
+  // Add a given value to a register's contents
+  ADD = 17;
+  // (Substract) a given value to a register's contents
+  SUB = 18;
+
+  // Change the color of a range of LEDs specifiyng all of the three HSL
+  // parameters
+  FILL = 19;
+  // Change the color of a range of LEDs specifying only Hue (HSL)
+  HFILL = 20;
+  // Change the color of a range of LEDs specifying only Saturation (HSL)
+  SFILL = 21;
+  // Change the color of a range of LEDs specifying only Level (HSL)
+  LFILL = 22;
+
+  // Change the color of only one LED specifiyng all of the three HSL parameters
+  PAINT = 23;
+  // Change the color of only one LED specifiyng only Hue (HSL)
+  HPAINT = 24;
+  // Change the color of only one LED specifiyng only Saturation (HSL)
+  SPAINT = 25;
+  // Change the color of only one LED specifiyng only Level (HSL)
+  LPAINT = 26;
+
+  // Apply an effect to a range of LEDs
+  // First argument ([EffectCode]) is not considered a parameter (A or B)}
+  EFFECT = 27;
+
+  // Delay execution for a given amount of time\
+  // First argument ([DelayCode]) is not considered a parameter (A or B)
+  DELAY = 28;
+
+  // Pause the script execution, can be resumed with RUN
+  PAUSE = 29;
+
+  // Get the contents of a registers\
+  // some devices might not be able to transmit data
+  GET = 30;
+
+  // Does a complete restart of all registers, flags, and memory contents
+  RESET = 31;
+}

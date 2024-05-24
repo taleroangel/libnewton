@@ -1,0 +1,14 @@
+syntax = "proto3";
+package dev.taleroangel.prism.codes;
+
+/// Designates the code for a given delay time unit
+enum DelayCode {
+  /// Delay for milliseconds
+  MS = 0;
+  /// Delay for seconds
+  SEC = 1;
+  /// Delay for minutes
+  MIN = 2;
+  /// Delay for hours
+  HRS = 3;
+}

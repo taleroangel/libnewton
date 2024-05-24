@@ -1,0 +1,19 @@
+syntax = "proto3";
+package dev.taleroangel.prism.memory;
+
+// Current status bitmask stored in $SF register
+enum StatusFlags {
+
+  // Device is halted, halt value mut be inside $SC
+  // Device will not respond to commands unless BEGIN, RESET or TRANSMIT is issued
+  HT = 0;
+  // Device is in script mode (script starts execution on RUN command)
+  ST = 1;
+  // Device is in transmit mode, no state machine (branching disabled)
+  TX = 2;
+  IX = 3;
+  HD = 4;
+  OW = 5;
+
+  reserved 6, 7;
+}

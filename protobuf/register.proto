@@ -1,0 +1,33 @@
+syntax = "proto3";
+package dev.taleroangel.prism.memory;
+
+// 8-bit memory registers
+// There are 10 well-known registers (0-9) and 32 general purpose registers (10-31)
+// General purpose registers are named with a $ without considering the well-known registers, so register $0 becomes 10 and $31 becomes 41
+enum Registers {
+  // Status Code, current execution status code. 0 for success
+  SC = 0;
+  // Status Flags, contains a bitmask representing all of the state flags
+  SF = 1;
+
+  // Program Counter, keep the current instruction on the script
+  // Beware: disabled on TRANSMIT mode
+  PC = 3;
+  // Previous Program Counter, keeps the previous program counter when branching
+  PP = 4;
+  // Return Value, Contains the returned value by the last routine
+  RV = 5;
+
+  // Range Start (Inclusive) Absolute index of the current selected start position
+  R0 = 6;
+  // Range End (Exclusive) Absolute index of the current selected end position
+  R1 = 7;
+
+  // Current amount of pending operations
+  PO = 8;
+
+  reserved 9;
+
+  // General purpose register offset
+  GENERAL = 10;
+}

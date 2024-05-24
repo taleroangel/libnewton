@@ -1,0 +1,10 @@
+syntax = "proto3";
+package dev.taleroangel.prism.codes;
+
+/// Codes corresponding to the standard effects
+enum EffectCode {
+  /// Dim lights an specified amount
+  DIM = 0;
+  /// Blend colors in a range
+  BLEND = 1;
+}
