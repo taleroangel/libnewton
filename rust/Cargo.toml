@@ -3,5 +3,13 @@ name = "libnewton"
 version = "2.0.0-beta"
 edition = "2021"
 
+authors = ["Angel Talero <angelgotalero@outlook.com>"]
+description = "libnewton, a library for interacting with Prism"
+repository = "https://github.com/taleroangel/libnewton"
+
+license = "GPL-3.0"
+readme = "../README.md"
+keywords = ["color", "leds", "prism"]
+
 [dependencies]
-prost = "0.12.6"
+prost = { version = "0.12.6" }
